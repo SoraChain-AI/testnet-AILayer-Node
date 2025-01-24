@@ -1,0 +1,26 @@
+2025-01-24 09:26:28,900 - nvflare.private.fed.app.deployer.server_deployer.ServerDeployer - INFO - server heartbeat timeout set to 600
+2025-01-24 09:26:28,985 - nvflare.fuel.f3.cellnet.core_cell.CoreCell - INFO - server: creating listener on grpc://0:8002
+2025-01-24 09:26:29,107 - nvflare.fuel.f3.cellnet.core_cell.CoreCell - INFO - server: created backbone external listener for grpc://0:8002
+2025-01-24 09:26:29,108 - nvflare.fuel.f3.cellnet.connector_manager.ConnectorManager - INFO - 51303: Try start_listener Listener resources: {'secure': False, 'host': 'localhost'}
+2025-01-24 09:26:29,109 - nvflare.fuel.f3.sfm.conn_manager - INFO - Connector [CH00002 PASSIVE tcp://0:7380] is starting
+2025-01-24 09:26:29,610 - nvflare.fuel.f3.cellnet.core_cell.CoreCell - INFO - server: created backbone internal listener for tcp://localhost:7380
+2025-01-24 09:26:29,611 - nvflare.fuel.f3.sfm.conn_manager - INFO - Connector [CH00001 PASSIVE grpc://0:8002] is starting
+2025-01-24 09:26:29,614 - nvflare.private.fed.server.server_engine.ServerEngine - INFO - initialize_comm called!
+2025-01-24 09:26:29,615 - nvflare.fuel.f3.cellnet.cell.Cell - INFO - Register blob CB for channel='aux_communication', topic='*'
+2025-01-24 09:26:29,616 - nvflare.private.fed.server.fed_server.FederatedServer - INFO - max_reg_duration=60.0
+2025-01-24 09:26:29,619 - nvflare.private.aux_runner.AuxRunner - INFO - registered aux handler for topic ObjectStreamer.Request
+2025-01-24 09:26:29,620 - nvflare.private.aux_runner.AuxRunner - INFO - registered aux handler for topic ObjectStreamer.Abort
+2025-01-24 09:26:29,628 - nvflare.private.fed.app.deployer.server_deployer.ServerDeployer - INFO - deployed FLARE Server.
+2025-01-24 09:26:29,702 - nvflare.fuel.hci.server.hci - INFO - Starting Admin Server server on Port 8003
+2025-01-24 09:26:29,702 - root - INFO - Server started
+2025-01-24 09:26:29,713 - nvflare.fuel.f3.drivers.grpc_driver.Server - INFO - added secure port at 0.0.0.0:8002
+2025-01-24 09:26:34,622 - nvflare.private.fed.server.server_state.ServerState - INFO - handle_sd_callback Got SP: sp.name='server' sp.fl_port='8002' sp.primary=True self.host='server' self.service_port='8002'
+2025-01-24 09:26:34,622 - nvflare.private.fed.server.server_state.ServerState - INFO - Got the primary sp: server fl_port: 8002 SSID: ebc6125d-0a56-4688-9b08-355fe9e4d61a. Turning to hot.
+2025-01-24 09:31:34,890 - nvflare.private.fed.server.server_engine.ServerEngine - INFO - FL server shutdown.
+2025-01-24 09:31:34,892 - nvflare.private.fed.server.job_runner.JobRunner - INFO - [identity=server, run=?]: Stop all the running jobs.
+2025-01-24 09:31:34,892 - nvflare.private.fed.server.fed_server.FederatedServer - INFO - shutting down server
+2025-01-24 09:31:34,892 - nvflare.private.fed.server.fed_server.FederatedServer - INFO - canceling sync locks
+2025-01-24 09:31:34,893 - nvflare.private.fed.server.fed_server.FederatedServer - INFO - server off
+2025-01-24 09:31:35,405 - nvflare.fuel.hci.server.hci - INFO - Admin Server server on Port 8003 shutdown!
+2025-01-24 09:31:35,406 - nvflare.private.stream_runner.ObjectStreamer - INFO - Stream Runer is Shut Down
+2025-01-24 09:31:37,120 - nvflare.fuel.f3.mpm.MPM - INFO - MPM: Good Bye!

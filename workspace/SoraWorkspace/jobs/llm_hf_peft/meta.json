@@ -1,0 +1,16 @@
+{
+    "name": "llm_hf_peft",
+    "resource_spec": {},
+    "min_clients": 2,
+    "deploy_map": {
+        "app_server": [
+            "server"
+        ],
+        "app_Client1": [
+            "Client1"
+        ],
+        "app_Client2": [
+            "Client2"
+        ]
+    }
+}

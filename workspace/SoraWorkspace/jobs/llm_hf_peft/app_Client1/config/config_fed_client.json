@@ -1,0 +1,21 @@
+{
+    "format_version": 2,
+    "executors": [
+        {
+            "tasks": [
+                "train"
+            ],
+            "executor": {
+                "path": "nvflare.app_opt.pt.in_process_client_api_executor.PTInProcessClientAPIExecutor",
+                "args": {
+                    "task_script_path": "src/hf_sft_peft_fl.py",
+                    "task_script_args": "--model_name_or_path /home/frank/testnet-AILayer-Node/data/Model --data_path_train /home/frank/testnet-AILayer-Node/data/Output/training.jsonl --data_path_valid /home/frank/testnet-AILayer-Node/data/Output/validation.jsonl --output_path peft --train_mode PEFT --message_mode numpy --clean_up 0",
+                    "params_exchange_format": "numpy"
+                }
+            }
+        }
+    ],
+    "components": [],
+    "task_data_filters": [],
+    "task_result_filters": []
+}

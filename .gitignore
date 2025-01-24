@@ -6,6 +6,11 @@ __pycache__/
 # C extensions
 *.so
 
+# removing dockerfile & requirements
+dockerfile
+requirements.txt
+submitJob.py
+
 # Distribution / packaging
 .Python
 build/
