@@ -30,7 +30,36 @@ def main():
     current_folder = os.path.dirname(os.path.realpath(__file__))
 
     logger.info(f"Staring configuring profiles for server and Client")
-    subprocess.run([
+    # subprocess.run([
+    #     "python",
+    #     "sft_job_FedAPI.py",
+    #     "--client_ids",
+    #     *args.client_ids,
+    #     "--model_name_or_path",
+    #     f"{current_folder}/data/Model",
+    #     "--data_path",
+    #     args.data_path,
+    #     "--workspace_dir",
+    #     args.workspace_dir,
+    #     #currntly by default jobs dir is under workspace
+    #     # "--job_dir",
+    #     # args.job_dir,
+        
+    #     if(args.AWS_ACCESS_KEY_ID is not None ):
+    #         "--AWS_ACCESS_KEY_ID",
+    #         args.AWS_ACCESS_KEY_ID,
+    #     if(args.AWS_SECRET_ACCESS_KEY is not None ):
+    #         "--AWS_SECRET_ACCESS_KEY",
+    #         args.AWS_SECRET_ACCESS_KEY,
+    #     if(args.BUCKET_NAME is not None ):
+    #         "--AWS_BUCKET_NAME",
+    #         args.BUCKET_NAME,
+    #     "--train_mode",
+    #     args.train_mode,
+    # ], check=True)
+    
+   
+    args_list = [
         "python",
         "sft_job_FedAPI.py",
         "--client_ids",
@@ -41,19 +70,19 @@ def main():
         args.data_path,
         "--workspace_dir",
         args.workspace_dir,
-        #currntly by default jobs dir is under workspace
-        # "--job_dir",
-        # args.job_dir,
-        "--AWS_ACCESS_KEY_ID",
-        args.AWS_ACCESS_KEY_ID,
-        "--AWS_SECRET_ACCESS_KEY",
-        args.AWS_SECRET_ACCESS_KEY,
-        "--AWS_BUCKET_NAME",
-        args.BUCKET_NAME,
-        "--train_mode",
-        args.train_mode,
-    ], check=True)
-    
+    ]
+
+    if args.AWS_ACCESS_KEY_ID is not None:
+        args_list.extend(["--AWS_ACCESS_KEY_ID", args.AWS_ACCESS_KEY_ID])
+
+    if args.AWS_SECRET_ACCESS_KEY is not None:
+        args_list.extend(["--AWS_SECRET_ACCESS_KEY", args.AWS_SECRET_ACCESS_KEY])
+
+    if args.BUCKET_NAME is not None:
+        args_list.extend(["--AWS_BUCKET_NAME", args.BUCKET_NAME])
+
+    subprocess.run(args_list, check=True)
+
     logger.info(f"finished conofiguring profiles for server and Client")
     logger.info(f"Starting Aggregator Node on the server")
 
