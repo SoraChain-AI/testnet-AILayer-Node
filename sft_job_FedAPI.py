@@ -178,7 +178,7 @@ def UploadServerConfiguration(workspace , AWS_KEY_ID, AWS_SECRET_KEY, BUCKET):
 
 
     #provide it with command line argument
-    AWS_ACCESS_KEY_ID = AWS_KEY_ID.
+    AWS_ACCESS_KEY_ID = AWS_KEY_ID,
     AWS_SECRET_ACCESS_KEY = AWS_SECRET_KEY
     BUCKET_NAME = BUCKET
 
