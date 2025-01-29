@@ -125,6 +125,12 @@ def main():
     
     print("job_dir=", job_dir)
     job.export_job(job_dir)
+
+    #Uploading configuration to the backend
+    if(args.AWS_ACCESS_KEY_ID is None or args.AWS_SECRET_ACCESS_KEY is None or args.BUCKET_NAME is None):
+        print("Please provide AWS access ,else data will not be uploaded")
+    else:
+        UploadServerConfiguration(workspace_dir, args.AWS_ACCESS_KEY_ID, args.AWS_SECRET_ACCESS_KEY, args.BUCKET_NAME)
     # _prepare_jobs_dir(job_dir, args.workspace_dir)
     # start_poc(workspace_dir, num_threads, args.gpu, job_dir)
 
@@ -146,10 +152,8 @@ def PreparePOC( workspacePath , client_ids ):
     DEFAULT_PROJECT_NAME = default_project_title        #loads default project title from config file,edit file to make changes
     _prepare_poc(list_of_clients, num_clients, workspace)
 
-    logger.debug(f"prod dir: {get_production_dir(workspace)}") 
+    logger.debug(f"prod dir: {get_production_dir(workspace)}")    
     
-    #Uploading configuration to the backend
-    UploadServerConfiguration(workspace)
     
 
 # def AuthnticateNode(userAddress):
@@ -170,13 +174,13 @@ def PreparePOC( workspacePath , client_ids ):
 #         print(f"Error checking blockchain connection: {e}")
 #     ##
 
-def UploadServerConfiguration(workspace : str):
+def UploadServerConfiguration(workspace , AWS_KEY_ID, AWS_SECRET_KEY, BUCKET):
 
 
     #provide it with command line argument
-    AWS_ACCESS_KEY_ID = "AKIA4RRF7QGBDTNTVUAG" 
-    AWS_SECRET_ACCESS_KEY = "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"
-    BUCKET_NAME = "sorachaintestnode"
+    AWS_ACCESS_KEY_ID = AWS_KEY_ID.
+    AWS_SECRET_ACCESS_KEY = AWS_SECRET_KEY
+    BUCKET_NAME = BUCKET
 
     # Create an instance of the S3Uploader class
     uploader = S3Uploader(AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, BUCKET_NAME)
@@ -285,6 +289,24 @@ def define_parser():
         "--address",
         type=str,
         help="Define address of the connecting node",
+    )
+    parser.add_argument(
+        "--AWS_ACCESS_KEY_ID",
+        type=str,
+        default=None,
+        help="AWS_ACCESS_KEY_ID",
+    )
+    parser.add_argument(
+        "--AWS_SECRET_ACCESS_KEY",
+        type=str,
+        default=None,
+        help="secret key aws",
+    )
+    parser.add_argument(
+        "--BUCKET_NAME",
+        type=str,
+        default=None,
+        help="BucketName",
     )
     return parser.parse_args()
 

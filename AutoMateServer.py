@@ -44,6 +44,12 @@ def main():
         #currntly by default jobs dir is under workspace
         # "--job_dir",
         # args.job_dir,
+        "--AWS_ACCESS_KEY_ID",
+        args.AWS_ACCESS_KEY_ID,
+        "--AWS_SECRET_ACCESS_KEY",
+        args.AWS_SECRET_ACCESS_KEY,
+        "--AWS_BUCKET_NAME",
+        args.AWS_BUCKET_NAME,
         "--train_mode",
         args.train_mode,
     ], check=True)

@@ -71,6 +71,25 @@ def main():
         default="numpy",
         help="message mode, numpy or tensor, default to numpy",
     )
+    parser.add_argument(
+        "--AWS_ACCESS_KEY_ID",
+        type=str,
+        default=None,
+        help="AWS_ACCESS_KEY_ID",
+    )
+    parser.add_argument(
+        "--AWS_SECRET_ACCESS_KEY",
+        type=str,
+        default=None,
+        help="secret key aws",
+    )
+    parser.add_argument(
+        "--BUCKET_NAME",
+        type=str,
+        default=None,
+        help="BucketName",
+    )
+    
     parser.add_argument("--local_epoch", type=int, default=1)
     parser.add_argument("--clean_up", type=int, default=0)
     args = parser.parse_args()
