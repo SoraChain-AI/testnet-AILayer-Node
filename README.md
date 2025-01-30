@@ -1,4 +1,4 @@
-# testnet-AILayer-Node
+# testnet-AI-Layer-Node
 The repo contains a demo script for you to finetune a open Source Model with SoraEngine
 
 ## Configure Environment
