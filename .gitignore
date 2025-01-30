@@ -9,7 +9,6 @@ __pycache__/
 # removing dockerfile & requirements
 dockerfile
 requirements.txt
-submitJob.py
 workspace
 data/Model/
 
