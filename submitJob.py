@@ -10,15 +10,10 @@ from nvflare.tool.job.job_cli import internal_submit_job, find_admin_user_and_di
 
 def main():
     args = define_parser()
-    admin_dir_path = args.admin_dir
     job_dir = args.job
     
     admin_username, admin_user_dir = find_admin_user_and_dir()
     print("admin_username, admin_user_dir", admin_username, admin_user_dir)
-
-
-    print(args.admin_dir)
-    assert os.path.isdir(args.admin_dir), f"admin directory does not exist at {args.admin_dir}"
 
     admin_username, admin_user_dir = find_admin_user_and_dir()
 

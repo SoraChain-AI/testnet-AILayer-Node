@@ -8,7 +8,6 @@ __pycache__/
 
 # removing dockerfile & requirements
 dockerfile
-requirements.txt
 workspace
 data/Model/
 

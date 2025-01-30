@@ -1,0 +1,4 @@
+web3
+loguru
+huggingface_hub
+boto3
