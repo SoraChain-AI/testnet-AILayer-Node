@@ -19,7 +19,8 @@ def main():
     current_folder = os.path.dirname(os.path.realpath(__file__))
 
     workspace = args.workspace_dir
-    getConfig(workspace,args.client_id, args.SORA_ACCESS_KEY_ID, args.SORA_SECRET_ACCESS_KEY, args.SORA_BUCKET_NAME)
+    if args.SORA_ACCESS_KEY_ID is not None or args.SORA_SECRET_ACCESS_KEY is not None or args.SORA_BUCKET_NAME is not None:        
+        getConfig(workspace,args.client_id, args.SORA_ACCESS_KEY_ID, args.SORA_SECRET_ACCESS_KEY, args.SORA_BUCKET_NAME)
 
     #Start Client
     startClient(args.client_id, workspace)
@@ -85,7 +86,7 @@ def define_parser():
     parser.add_argument(
         "--SORA_BUCKET_NAME",
         type=str,
-        default="sorachaintestnode",
+        default=None,
         help="BucketName, directory of the config files",
     )
     return parser.parse_args()
