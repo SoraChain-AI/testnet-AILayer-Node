@@ -124,6 +124,7 @@ def main():
     PreparePOC(args.workspace_dir, args.client_ids)
     
     print("job_dir=", job_dir)
+    logger.info(f"Job to be submitted to server: {job_dir}/{job.name}")
     job.export_job(job_dir)
 
     #Uploading configuration to the backend

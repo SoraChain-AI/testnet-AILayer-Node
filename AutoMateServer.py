@@ -152,7 +152,7 @@ def define_parser():
     parser.add_argument(
         "--data_path",
         type=str,
-        default="",
+        default="${PWD}/data/Output ",
         help="root directory for training and validation data",
     )
     parser.add_argument(
