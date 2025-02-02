@@ -230,8 +230,8 @@ def define_parser():
     parser.add_argument(
         "--num_rounds",
         type=int,
-        default=3,
-        help="Number of rounds, default to 5",
+        default=1,
+        help="Number of rounds, default to 2",
     )
     parser.add_argument(
         "--workspace_dir",
@@ -260,7 +260,7 @@ def define_parser():
     parser.add_argument(
         "--train_mode",
         type=str,
-        default="SFT",
+        default="peft",
         help="training mode, SFT or PEFT, default to SFT",
     )
     parser.add_argument(

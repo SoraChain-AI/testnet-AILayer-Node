@@ -57,12 +57,12 @@ def main():
     parser.add_argument(
         "--output_path",
         type=str,
-        default="./workspace_federated/llama-3.2-1b-dolly-sft",
+        default="peft",
     )
     parser.add_argument(
         "--train_mode",
         type=str,
-        default="SFT",
+        default="peft",
         help="training mode, SFT or PEFT, default to SFT",
     )
     parser.add_argument(
@@ -165,7 +165,7 @@ def main():
         max_seq_length=1024,
         save_total_limit=2,
         # safetensors has some issues in saving lm_head.weight, disable it for now
-        save_safetensors=False,
+        # save_safetensors=False,
     )
 
     # Trainer
