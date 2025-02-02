@@ -11,7 +11,7 @@ from utils.S3Uploader import S3Uploader
 def main():
     args = define_parser()
     modelPath = args.model_name_or_path
-    # getModel(modelPath) 
+    getModel(modelPath) 
 
     if args.data_path is None:
         args.data_path = f"{default_Data_path}/training.jsonl"
@@ -116,7 +116,7 @@ def getConfig(workspace,client_id,aws_access_key_id, aws_secret_access_key, buck
     current_folder = os.path.dirname(os.path.realpath(__file__))
 
     logger.info("Starting download configs from cloud bucket")
-    uploader.fetch_config_folder(bucket_name, "Client1", workspace)
+    uploader.fetch_config_folder(bucket_name, client_id, f"{workspace}")
     logger.info(f"Download configs at {workspace}  ")
 
 def startClient(client_id,workspace):
