@@ -5,7 +5,7 @@ from transformers import AutoModelForCausalLM, AutoTokenizer
 
 def merge_lora_to_base_model(
     model_name_or_path: str, adapter_name_or_path: str, save_path: str
-):
+)-> bool:
     tokenizer = AutoTokenizer.from_pretrained(
         adapter_name_or_path,
         use_fast=True,
@@ -22,5 +22,10 @@ def merge_lora_to_base_model(
     )
     model = model.merge_and_unload()
 
-    tokenizer.save_pretrained(save_path)
-    model.save_pretrained(save_path)
+    try:
+        tokenizer.save_pretrained(save_path)
+        model.save_pretrained(save_path)
+    except Exception as e:
+        print(e)
+        return False
+    return True
