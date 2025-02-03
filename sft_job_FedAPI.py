@@ -56,10 +56,10 @@ def main():
 
     # Create the FedJob
     if train_mode.lower() == "sft":
-        job = FedJob(name="llm_hf_sft", min_clients=num_clients)
+        job = FedJob(name="llm_hf_sft", min_clients= int(args.min_clients) )
         output_path = "sft"
     elif train_mode.lower() == "peft":
-        job = FedJob(name="llm_hf_peft", min_clients=num_clients)
+        job = FedJob(name="llm_hf_peft", min_clients= int(args.min_clients) )
         output_path = "peft"
     else:
         raise ValueError(f"Invalid train_mode: {train_mode}, only SFT and PEFT are supported.")
@@ -96,6 +96,9 @@ def main():
         data_path_valid = os.path.join(args.data_path,"validation.jsonl")
 
         script_args = f"--model_name_or_path {model_name_or_path} --data_path_train {data_path_train} --data_path_valid {data_path_valid} --output_path {output_path} --train_mode {train_mode} --message_mode {message_mode} --clean_up {clean_up}"
+        if args.save_global_state is not None:
+            script_args += f" --save_global_state "
+
         if message_mode == "tensor":
             params_exchange_format = "pytorch"
         elif message_mode == "numpy":
@@ -119,19 +122,17 @@ def main():
 
     # Run the job
     print("workspace_dir=", workspace_dir)
-    print("num_threads=", num_threads)
     # job.simulator_run(workspace_dir, threads=num_threads, gpu=args.gpu)
     PreparePOC(args.workspace_dir, args.client_ids)
     
-    print("job_dir=", job_dir)
     logger.info(f"Job to be submitted to server: {job_dir}/{job.name}")
     job.export_job(job_dir)
 
     #Uploading configuration to the backend
-    if(args.AWS_ACCESS_KEY_ID is None or args.AWS_SECRET_ACCESS_KEY is None or args.BUCKET_NAME is None):
+    if(args.SORA_ACCESS_KEY_ID is None or args.SORA_SECRET_ACCESS_KEY is None or args.SORA_BUCKET_NAME is None):
         print("Please provide AWS access ,else data will not be uploaded")
     else:
-        UploadServerConfiguration(workspace_dir, args.AWS_ACCESS_KEY_ID, args.AWS_SECRET_ACCESS_KEY, args.BUCKET_NAME)
+        UploadServerConfiguration(workspace_dir, args.SORA_ACCESS_KEY_ID, args.SORA_SECRET_ACCESS_KEY, args.SORA_BUCKET_NAME)
     # _prepare_jobs_dir(job_dir, args.workspace_dir)
     # start_poc(workspace_dir, num_threads, args.gpu, job_dir)
 
@@ -175,6 +176,7 @@ def PreparePOC( workspacePath , client_ids ):
 #         print(f"Error checking blockchain connection: {e}")
 #     ##
 
+
 def UploadServerConfiguration(workspace , AWS_KEY_ID, AWS_SECRET_KEY, BUCKET):
 
 
@@ -208,6 +210,7 @@ def get_production_dir(workspace : str):
 
 def define_parser():
     parser = argparse.ArgumentParser()
+
     parser.add_argument(
         "--client_ids",
         nargs="+",
@@ -258,11 +261,25 @@ def define_parser():
         help="root directory for training and validation data",
     )
     parser.add_argument(
+        "--min_clients",
+        type=str,
+        default=str(2),
+        help="mimum number of clients requires joining to start the task, default to 2",
+    )
+    parser.add_argument(
         "--train_mode",
         type=str,
         default="peft",
         help="training mode, SFT or PEFT, default to SFT",
     )
+    parser.add_argument(
+        "--save_global_state",
+        type=str,
+        default=None,
+        # action="store_true",
+        help="saves the global model explicitely in safetensor format",
+    )
+    
     parser.add_argument(
         "--quantize_mode",
         type=str,
@@ -292,19 +309,19 @@ def define_parser():
         help="Define address of the connecting node",
     )
     parser.add_argument(
-        "--AWS_ACCESS_KEY_ID",
+        "--SORA_ACCESS_KEY_ID",
         type=str,
         default=None,
-        help="AWS_ACCESS_KEY_ID",
+        help="SORA ACCESS_KEY_ID",
     )
     parser.add_argument(
-        "--AWS_SECRET_ACCESS_KEY",
+        "--SORA_SECRET_ACCESS_KEY",
         type=str,
         default=None,
         help="secret key aws",
     )
     parser.add_argument(
-        "--BUCKET_NAME",
+        "--SORA_BUCKET_NAME",
         type=str,
         default=None,
         help="BucketName",

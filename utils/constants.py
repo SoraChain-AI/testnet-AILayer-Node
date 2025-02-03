@@ -58,5 +58,7 @@ model2base_model = {
 default_train_file = "./data/Content-Articles/datasets/train.csv"
 default_test_file = "./data/Content-Articles/datasets/test.csv"
 default_Data_path = "./data/Output"
+default_training_server = "localhost"
 default_project_title = "SoraChainTestNode"
+default_global_model ="global_model.safetensors"
 

@@ -8,10 +8,13 @@ import yaml
 import datasets
 import numpy as np
 import torch
+from loguru import logger
+from safetensors.torch import save_file
 from peft import LoraConfig, get_peft_model, get_peft_model_state_dict, set_peft_model_state_dict, utils
 from transformers import AutoModelForCausalLM, AutoTokenizer, trainer_utils
 from trl import SFTConfig, SFTTrainer
 from huggingface_hub import HfApi
+from utils.constants import default_global_model
 
 
 import nvflare.client as flare
@@ -88,6 +91,13 @@ def main():
         type=str,
         default=None,
         help="BucketName",
+    )
+    parser.add_argument(
+        "--save_global_state",
+        # type=str
+        # default=None,
+        action="store_true",
+        help="saves the global model explicitely in safetensor format",
     )
     
     parser.add_argument("--local_epoch", type=int, default=1)
@@ -196,6 +206,11 @@ def main():
         for key in list(global_model.keys()):
             global_model[key.replace("model.", "", 1)] = global_model.pop(key)
 
+        #save global model initially in both the formates
+        if args.save_global_state and curr_round == 0:
+            # torch.save(global_model, os.path.join(args.output_path, "global_model.pt"))
+            save_file(global_model, os.path.join(args.output_path, default_global_model))
+
         # wraps evaluation logic into a method to re-use for
         # evaluation on both trained and received model
         def evaluate(input_weights, mode):
@@ -264,13 +279,17 @@ def main():
             metrics={"eval_loss": eval_loss},
             meta={"NUM_STEPS_CURRENT_ROUND": trainer.train_dataset.num_rows},
         )
+        logger.info(f"path to checkpoint: {trainer_utils.get_last_checkpoint(trainer.args.output_dir)}")
         # send model back to NVFlare
         flare.send(output_model)
-        model.save_pretrained("./outputs")  
+        # model.save_pretrained("./outputs")  
          
         # Save and upload to HuggingFace
         # uploadHFModel()   
 
+def save_intial_global_model():
+    
+    pass
 def uploadHFModel():
     api = HfApi(token=os.environ["HF_TOKEN"])
     

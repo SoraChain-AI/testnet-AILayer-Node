@@ -44,17 +44,31 @@ def main():
         "--workspace_dir",
         args.workspace_dir,
         "--train_mode",
-        args.train_mode
+        args.train_mode,
+        "--min_clients",
+        str(args.min_clients)
     ]
+    
+    # if args.min_clients != 0:
+    #     args_list.extend(["--min_clients", args.min_clients])
 
-    if args.AWS_ACCESS_KEY_ID is not None:
-        args_list.extend(["--AWS_ACCESS_KEY_ID", args.AWS_ACCESS_KEY_ID])
+    if args.FLType is not None:
+        args_list.extend(["--FLType", args.FLType])
 
-    if args.AWS_SECRET_ACCESS_KEY is not None:
-        args_list.extend(["--AWS_SECRET_ACCESS_KEY", args.AWS_SECRET_ACCESS_KEY])
+    if args.save_global_state :
+        args_list.extend(["--save_global_state", "True"])
 
-    if args.BUCKET_NAME is not None:
-        args_list.extend(["--AWS_BUCKET_NAME", args.BUCKET_NAME])
+    # if args.SORA_ACCESS_KEY_ID is not None:
+    #     args_list.extend(["--SORA_ACCESS_KEY_ID", args.SORA_ACCESS_KEY_ID])
+
+    if args.SORA_ACCESS_KEY_ID is not None:
+        args_list.extend(["--SORA_ACCESS_KEY_ID", args.SORA_ACCESS_KEY_ID])
+
+    if args.SORA_SECRET_ACCESS_KEY is not None:
+        args_list.extend(["--SORA_SECRET_ACCESS_KEY", args.SORA_SECRET_ACCESS_KEY])
+
+    if args.SORA_BUCKET_NAME is not None:
+        args_list.extend(["--SORA_BUCKET_NAME", args.SORA_BUCKET_NAME])
 
     subprocess.run(args_list, check=True)
 
@@ -112,6 +126,11 @@ def define_parser():
         help="run the script for server or client",
     )
     parser.add_argument(
+        "--save_global_state",
+        action="store_true",
+        help="saves the global model explicitely in safetensor format",
+    )
+    parser.add_argument(
         "--workspace_dir",
         type=str,
         default="./workspace/SoraWorkspace",
@@ -137,25 +156,31 @@ def define_parser():
         help="training mode, SFT or PEFT, default to PEFT",
     )
     parser.add_argument(
+        "--min_clients",
+        type=int,
+        default=2,
+        help="minimum number of clients required to start the training, default to 2",
+    )
+    parser.add_argument(
         "--quantize_mode",
         type=str,
         default=None,
         help="quantization mode, float16 or blockwise8, default to None (no quantization)",
     )
     parser.add_argument(
-        "--AWS_ACCESS_KEY_ID",
+        "--SORA_ACCESS_KEY_ID",
         type=str,
         default=None,
-        help="AWS_ACCESS_KEY_ID",
+        help="SORA_ACCESS_KEY_ID",
     )
     parser.add_argument(
-        "--AWS_SECRET_ACCESS_KEY",
+        "--SORA_SECRET_ACCESS_KEY",
         type=str,
         default=None,
         help="secret key aws",
     )
     parser.add_argument(
-        "--BUCKET_NAME",
+        "--SORA_BUCKET_NAME",
         type=str,
         default=None,
         help="BucketName",

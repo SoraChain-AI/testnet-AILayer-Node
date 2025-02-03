@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 from loguru import logger
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from utils.constants import default_Data_path
+from utils.constants import default_Data_path , default_training_server
 from utils.S3Uploader import S3Uploader
 
 def main():
@@ -22,8 +22,11 @@ def main():
     if args.SORA_ACCESS_KEY_ID is not None or args.SORA_SECRET_ACCESS_KEY is not None or args.SORA_BUCKET_NAME is not None:        
         getConfig(workspace,args.client_id, args.SORA_ACCESS_KEY_ID, args.SORA_SECRET_ACCESS_KEY, args.SORA_BUCKET_NAME)
 
-    #Start Client
-    startClient(args.client_id, workspace)
+        #start Client
+    if args.training_server is not None:
+        startClient(args.client_id, workspace, args.training_server)
+    else:
+        startClient(args.client_id, workspace,default_training_server)
 
 
 def define_parser():
@@ -32,8 +35,10 @@ def define_parser():
         "--client_id",
         type=str,
         default="client1",
+        required=True,
         help="Clinet ID, used to get the data path for each client",
     )
+    
     parser.add_argument(
         "--FLType",
         type=str,
@@ -44,6 +49,7 @@ def define_parser():
         "--workspace_dir",
         type=str,
         default="./workspace/SoraWorkspace",
+        required=True,
         help="work directory, default to './workspace/SoraWorkspace'",
     )
     parser.add_argument(
@@ -58,6 +64,12 @@ def define_parser():
         type=str,
         default="",
         help="root directory for training and validation data",
+    )
+    parser.add_argument(
+        "--training_server",
+        type=str,
+        default="localhost",
+        help="address of the training server, default to 'localhost'",
     )
     parser.add_argument(
         "--train_mode",
@@ -119,10 +131,12 @@ def getConfig(workspace,client_id,aws_access_key_id, aws_secret_access_key, buck
     uploader.fetch_config_folder(bucket_name, client_id, f"{workspace}")
     logger.info(f"Download configs at {workspace}  ")
 
-def startClient(client_id,workspace):
-    client_name = client_id   
+def startClient(client_id,workspace, training_server):
+    client_name = client_id
+
     client_startup_file = f"{workspace}/startup/start.sh"    
-    args = ['localhost:8002:8003' , client_name]
+    # client_startup_file = f"{workspace}/{client_name}/startup/start.sh"    
+    args = [f'{training_server}:8002:8003' , client_name]
     
     logger.info(f"Starting Trainer Node on the Client using {client_startup_file} with args {args}")
     subprocess.run(['bash', client_startup_file] + args)
