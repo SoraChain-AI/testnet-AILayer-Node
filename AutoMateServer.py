@@ -90,7 +90,7 @@ def main():
     server_startup_file = f"{config_folder_path}/{server_name}/startup/start.sh"    
     args = 'localhost'
     logger.info(f"Starting Aggregator Node on the server at {server_startup_file} with args {args}")
-    subprocess.run([server_startup_file, args])
+    # subprocess.run([server_startup_file, args])
 
 def getProjectFile():
     pass

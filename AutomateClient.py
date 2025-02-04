@@ -22,11 +22,12 @@ def main():
     if args.SORA_ACCESS_KEY_ID is not None or args.SORA_SECRET_ACCESS_KEY is not None or args.SORA_BUCKET_NAME is not None:        
         getConfig(workspace,args.client_id, args.SORA_ACCESS_KEY_ID, args.SORA_SECRET_ACCESS_KEY, args.SORA_BUCKET_NAME)
 
+    print("training server " + args.training_server)
         #start Client
-    if args.training_server is not None:
-        startClient(args.client_id, workspace, args.training_server)
-    else:
-        startClient(args.client_id, workspace,default_training_server)
+    # if args.training_server is not None:
+    #     startClient(args.client_id, workspace, args.training_server)
+    # else:
+    #     startClient(args.client_id, workspace,default_training_server)
 
 
 def define_parser():
