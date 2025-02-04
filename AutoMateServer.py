@@ -46,11 +46,16 @@ def main():
         "--train_mode",
         args.train_mode,
         "--min_clients",
-        str(args.min_clients)
+        str(args.min_clients),
+        "--project_file",
+        str(args.project_file)
     ]
     
     # if args.min_clients != 0:
     #     args_list.extend(["--min_clients", args.min_clients])
+
+    if args.training_server is not None:
+        args_list.extend(["--training_server", args.training_server])
 
     if args.FLType is not None:
         args_list.extend(["--FLType", args.FLType])
@@ -81,14 +86,14 @@ def main():
     project_file = os.path.join(args.workspace_dir, "project.yml")
 
     # Open the YAML file
-    with open(project_file, 'r') as file:
+    with open(args.project_file, 'r') as file:
         # Load the YAML file
         data = yaml.safe_load(file)
 
     # Extract the value of the 'name' field
     server_name = data['participants'][0]['name']    
     server_startup_file = f"{config_folder_path}/{server_name}/startup/start.sh"    
-    args = 'localhost'
+    args = args.training_server
     logger.info(f"Starting Aggregator Node on the server at {server_startup_file} with args {args}")
     subprocess.run([server_startup_file, args])
 
@@ -96,6 +101,7 @@ def getProjectFile():
     pass
 
 def getModel(path ):
+    
     #download model
     current_folder = os.path.dirname(os.path.realpath(__file__))
     logger.info("Downloading Model from repo")
@@ -150,6 +156,12 @@ def define_parser():
         help="root directory for training and validation data",
     )
     parser.add_argument(
+        "--training_server",
+        type=str,
+        default=None,        
+        help="address of the training server, default to 'localhost'",
+    )
+    parser.add_argument(
         "--train_mode",
         type=str,
         default="PEFT",
@@ -161,6 +173,13 @@ def define_parser():
         default=2,
         help="minimum number of clients required to start the training, default to 2",
     )
+    parser.add_argument(
+        "--project_file",
+        type=str,
+        default="${PWD}/data/project.yml",
+        help="project configuration file, default to ${PWD}/data/project.yml",    
+    )
+    
     parser.add_argument(
         "--quantize_mode",
         type=str,

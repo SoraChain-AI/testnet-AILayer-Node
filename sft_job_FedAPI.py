@@ -14,6 +14,8 @@ from nvflare.apis.workspace import Workspace
 from nvflare.tool.poc.poc_commands import start_poc,stop_poc,_prepare_poc,_prepare_jobs_dir,get_poc_workspace,get_examples_dir
 from nvflare.tool.poc.poc_commands import old_start_poc , DEFAULT_WORKSPACE, DEFAULT_PROJECT_NAME,get_prod_dir
 from nvflare.tool.job.job_cli import internal_submit_job
+from nvflare.lighter.provision import provision
+from src.PreprocessProject import createProjectFile,update_server_host
 from utils.constants import default_Data_path, default_project_title
 from loguru import logger
 from utils.S3Uploader import S3Uploader
@@ -123,7 +125,9 @@ def main():
     # Run the job
     print("workspace_dir=", workspace_dir)
     # job.simulator_run(workspace_dir, threads=num_threads, gpu=args.gpu)
-    PreparePOC(args.workspace_dir, args.client_ids)
+    update_server_host(args.project_file,args.training_server)
+    # PreparePOC(args.workspace_dir, args.client_ids, args.project_file)
+    provision(args.project_file, args.workspace_dir)
     
     logger.info(f"Job to be submitted to server: {job_dir}/{job.name}")
     job.export_job(job_dir)
@@ -135,7 +139,7 @@ def main():
         UploadServerConfiguration(workspace_dir, args.SORA_ACCESS_KEY_ID, args.SORA_SECRET_ACCESS_KEY, args.SORA_BUCKET_NAME)
    
 
-def PreparePOC( workspacePath , client_ids ):
+def PreparePOC( workspacePath , client_ids, projectfile_path ):
 
     list_of_clients = []
     for client in client_ids:
@@ -151,7 +155,12 @@ def PreparePOC( workspacePath , client_ids ):
     
     DEFAULT_WORKSPACE = workspace
     DEFAULT_PROJECT_NAME = default_project_title        #loads default project title from config file,edit file to make changes
-    _prepare_poc(list_of_clients, num_clients, workspace)
+
+    #create project config file first and pass it for project preparation
+    # project_file =createProjectFile(workspacePath)
+    # _prepare_poc(list_of_clients, num_clients, workspace)
+
+    _prepare_poc(list_of_clients, num_clients, workspace,project_conf_path=projectfile_path)
 
     logger.debug(f"prod dir: {get_production_dir(workspace)}")    
     
@@ -248,10 +257,22 @@ def define_parser():
         help="directory for job export, default to './workspace/SChainPEFT'",
     )
     parser.add_argument(
+        "--project_file",
+        type=str,
+        default="${PWD}/data/project.yml",
+        help="project configuration file, default to ${PWD}/data/project.yml",    
+    )
+    parser.add_argument(
         "--model_name_or_path",
         type=str,
         default="meta-llama/llama-3.2-1b",
         help="model name or path",
+    )
+    parser.add_argument(
+        "--training_server",
+        type=str,
+        default="localhost",
+        help="address of the training server, default to 'localhost'",
     )
     parser.add_argument(
         "--data_path",
