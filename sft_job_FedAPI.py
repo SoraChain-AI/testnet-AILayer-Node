@@ -133,8 +133,7 @@ def main():
         print("Please provide AWS access ,else data will not be uploaded")
     else:
         UploadServerConfiguration(workspace_dir, args.SORA_ACCESS_KEY_ID, args.SORA_SECRET_ACCESS_KEY, args.SORA_BUCKET_NAME)
-    # _prepare_jobs_dir(job_dir, args.workspace_dir)
-    # start_poc(workspace_dir, num_threads, args.gpu, job_dir)
+   
 
 def PreparePOC( workspacePath , client_ids ):
 
@@ -194,7 +193,7 @@ def UploadServerConfiguration(workspace , AWS_KEY_ID, AWS_SECRET_KEY, BUCKET):
     config_folder_path = get_production_dir(workspace)
     logger.info(f"full path to Production config folder : {config_folder_path}")
     logger.info("Starting Upload configs to cloud bucket")
-    uploader.upload_config_folder(f"{config_folder_path}")
+    uploader.upload_config_folder(config_folder_path)
 
     logger.info(f"Config folder uploaded to S3 bucket: {BUCKET_NAME}")
     logger.info(f"Config folder path on S3: https://{BUCKET_NAME}.s3.amazonaws.com/")
