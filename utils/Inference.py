@@ -34,6 +34,10 @@ def main():
         type=str,
         default="once upon a time",
     )
+    parser.add_argument(
+        "--merge_model",
+        action="store_true",
+    )
     
     
     parser.add_argument("--mode", type=int, default=0)
@@ -48,15 +52,17 @@ def main():
     #     print(f"Found model files: {model_files}")
     # else:
     #     print("No files matching the pattern were found.")
+    model = AutoModelForCausalLM.from_pretrained(f"{model_path}")
 
-    
-    is_success = merge_lora_to_base_model(base_model, model_path, f"{model_path}/model.safetensors")
+    if args.merge_model:
+        is_success = merge_lora_to_base_model(base_model, model_path, f"{model_path}/merge_model")
 
-    if not is_success:
-        print("Error in merging Lora to base model")
-        return
+        if not is_success:
+            print("Error in merging Lora to base model")
+            return
+        model = AutoModelForCausalLM.from_pretrained(f"{model_path}/merge_model")
     
-    model = AutoModelForCausalLM.from_pretrained(f"{model_path}/model.safetensors")
+    
     tokenizer = AutoTokenizer.from_pretrained(model_path)
 
     prompt = args.prompt
