@@ -13,7 +13,7 @@ import yaml
 from pathlib import Path
 from loguru import logger
 import subprocess
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, login
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from utils.constants import default_Data_path, default_training_server
 from sft_job_FedAPI import get_prod_dir
@@ -22,6 +22,12 @@ from sft_job_FedAPI import get_prod_dir
 def main():
     args = define_parser()
     modelPath = args.model_name_or_path
+
+    #check if HF token is set
+    if(args.hf_token is not None):
+        os.environ["HUGGINGFACE_HUB_TOKEN"] = args.hf_token
+        login(token=args.hf_token)
+
     getModel(modelPath) 
 
     if args.data_path is None:
@@ -142,6 +148,12 @@ def define_parser():
     )
     parser.add_argument(
         "--training_server",
+        type=str,
+        default=None,        
+        help="address of the training server, default to 'localhost'",
+    )
+    parser.add_argument(
+        "--hf_token",
         type=str,
         default=None,        
         help="address of the training server, default to 'localhost'",
