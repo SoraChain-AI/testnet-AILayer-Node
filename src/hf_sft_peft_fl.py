@@ -185,7 +185,6 @@ def main():
         eval_dataset=dataset_valid,
         peft_config=peft_config,
         tokenizer=tokenizer,
-        packing=False,
         formatting_func=format_instruction,
         args=train_args,
     )
