@@ -11,7 +11,7 @@ from utils.S3Uploader import S3Uploader
 def main():
     args = define_parser()
     modelPath = args.model_name_or_path
-    getModel(modelPath) 
+    # getModel(modelPath) 
 
     if args.data_path is None:
         args.data_path = f"{default_Data_path}/training.jsonl"
@@ -24,10 +24,10 @@ def main():
 
     print("training server " + args.training_server)
         #start Client
-    # if args.training_server is not None:
-    #     startClient(args.client_id, workspace, args.training_server)
-    # else:
-    #     startClient(args.client_id, workspace,default_training_server)
+    if args.training_server is not None:
+        startClient(args.client_id, workspace, args.training_server)
+    else:
+        startClient(args.client_id, workspace,default_training_server)
 
 
 def define_parser():

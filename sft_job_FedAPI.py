@@ -123,6 +123,7 @@ def main():
     # Run the job
     print("workspace_dir=", workspace_dir)
     # job.simulator_run(workspace_dir, threads=num_threads, gpu=args.gpu)
+
     PreparePOC(args.workspace_dir, args.client_ids)
     
     logger.info(f"Job to be submitted to server: {job_dir}/{job.name}")
@@ -252,6 +253,12 @@ def define_parser():
         type=str,
         default="meta-llama/llama-3.2-1b",
         help="model name or path",
+    )
+    parser.add_argument(
+        "--training_server",
+        type=str,
+        default="localhost",
+        help="address of the training server, default to 'localhost'",
     )
     parser.add_argument(
         "--data_path",

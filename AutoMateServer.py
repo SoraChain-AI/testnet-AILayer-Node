@@ -15,7 +15,7 @@ from loguru import logger
 import subprocess
 from huggingface_hub import HfApi
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from utils.constants import default_Data_path
+from utils.constants import default_Data_path, default_training_server
 from sft_job_FedAPI import get_prod_dir
  
 
@@ -49,8 +49,8 @@ def main():
         str(args.min_clients)
     ]
     
-    # if args.min_clients != 0:
-    #     args_list.extend(["--min_clients", args.min_clients])
+    if args.training_server is not None:
+        args_list.extend(["--training_server", args.training_server])
 
     if args.FLType is not None:
         args_list.extend(["--FLType", args.FLType])
@@ -87,10 +87,14 @@ def main():
 
     # Extract the value of the 'name' field
     server_name = data['participants'][0]['name']    
-    server_startup_file = f"{config_folder_path}/{server_name}/startup/start.sh"    
-    args = 'localhost'
+    server_startup_file = f"{config_folder_path}/{server_name}/startup/start.sh"
+    argsList = []
+    if args.training_server is not None:  
+        argsList = args.training_server
+    else:
+        argsList = default_training_server
     logger.info(f"Starting Aggregator Node on the server at {server_startup_file} with args {args}")
-    # subprocess.run([server_startup_file, args])
+    subprocess.run([server_startup_file, argsList])
 
 def getProjectFile():
     pass
@@ -135,6 +139,12 @@ def define_parser():
         type=str,
         default="./workspace/SoraWorkspace",
         help="work directory, default to './workspace/SoraWorkspace'",
+    )
+    parser.add_argument(
+        "--training_server",
+        type=str,
+        default=None,        
+        help="address of the training server, default to 'localhost'",
     )
     parser.add_argument(
         "--model_name_or_path",

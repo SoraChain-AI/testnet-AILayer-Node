@@ -82,29 +82,10 @@ def main():
         max_length=300,
     )
     gen_text = tokenizer.batch_decode(gen_tokens)[0]
-    # outputs = tokenizer.batch_decode(gen_tokens)
     print(gen_text)
+    # outputs = tokenizer.batch_decode(gen_tokens)
     # for i in outputs:
-    #     print(i)
-
-
-#     # from transformers import T5Tokenizer, T5ForConditionalGeneration
-
-#     # tokenizer = T5Tokenizer.from_pretrained("google/flan-t5-base")
-#     # model = T5ForConditionalGeneration.from_pretrained("google/flan-t5-base", device_map="auto")
-
-#     # input_text = "translate English to German: How old are you?"
-#     # input_ids = tokenizer(input_text, return_tensors="pt").input_ids.to("cuda")
-
-#     # outputs = model.generate(input_ids)
-#     # print(tokenizer.decode(outputs[0]))
-
-# from datasets import load_dataset   
-
-# def main():
-#     print("hello")
-
-#     dataset =  load_dataset("VMware/open-instruct", split="train")
+    #         print(i)
 
 
 if __name__ == "__main__":
