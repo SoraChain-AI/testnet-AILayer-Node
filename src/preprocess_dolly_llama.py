@@ -23,13 +23,15 @@ def split_to_jsonl(data, output_dir, validation_ratio, testing_ratio):
     output_path_val = os.path.join(output_dir, "validation.jsonl")
     output_path_tst = os.path.join(output_dir, "testing.jsonl")
 
+    #currently take only first 1000 lines in consideration for training
     # data_ct = len(data)
     data_ct = 1000
+    
     val_threshold = int(data_ct * validation_ratio)
     test_threshold = int(data_ct * testing_ratio)
 
     with open(output_path_val, "w") as g, open(output_path_tst, "w") as h, open(output_path_tra, "w") as i:
-        for index, item in data.head(data_ct).iterrows():
+        for index, item in data.head(data_ct).iterrows():  #data.iterrows():
             context = item["context"].strip()
             if context != "":
                 # Randomize context and instruction order.
