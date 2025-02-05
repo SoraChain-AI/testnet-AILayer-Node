@@ -24,9 +24,9 @@ def main():
 
         #start Client
     if args.training_server is not None:
-        startClient(args.client_id, workspace, args.training_server)
+        startClient(args.client_id, workspace, args.training_server,args.port)
     else:
-        startClient(args.client_id, workspace,default_training_server)
+        startClient(args.client_id, workspace,default_training_server, args.port)
 
 
 def define_parser():
@@ -35,6 +35,13 @@ def define_parser():
         "--client_id",
         type=str,
         default="client1",
+        required=True,
+        help="Clinet ID, used to get the data path for each client",
+    )
+    parser.add_argument(
+        "--port",
+        type=str,
+        default=":8002:8003",
         required=True,
         help="Clinet ID, used to get the data path for each client",
     )
@@ -131,12 +138,12 @@ def getConfig(workspace,client_id,aws_access_key_id, aws_secret_access_key, buck
     uploader.fetch_config_folder(bucket_name, client_id, f"{workspace}")
     logger.info(f"Download configs at {workspace}  ")
 
-def startClient(client_id,workspace, training_server):
+def startClient(client_id,workspace, training_server ,port):
     client_name = client_id
 
     client_startup_file = f"{workspace}/startup/start.sh"    
     # client_startup_file = f"{workspace}/{client_name}/startup/start.sh"    
-    args = [f'{training_server}:8002:8003' , client_name]
+    args = [f'{training_server}{port}' , client_name]
     
     logger.info(f"Starting Trainer Node on the Client using {client_startup_file} with args {args}")
     subprocess.run(['bash', client_startup_file] + args)

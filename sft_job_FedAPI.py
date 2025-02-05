@@ -125,8 +125,9 @@ def main():
     # Run the job
     print("workspace_dir=", workspace_dir)
     # job.simulator_run(workspace_dir, threads=num_threads, gpu=args.gpu)
-    update_server_host(args.project_file,args.training_server)
     # PreparePOC(args.workspace_dir, args.client_ids, args.project_file)
+    
+    update_server_host(args.project_file,args.training_server)
     provision(args.project_file, args.workspace_dir)
     
     logger.info(f"Job to be submitted to server: {job_dir}/{job.name}")
