@@ -24,20 +24,20 @@ random.seed(0)
 np.random.seed(0)
 
 
-# def format_instruction(example):
-#     output_texts = []
-#     for i in range(len(example["input"])):
-#         text = f"### Instruction: Generate Output according to the information and question given by Input. ### Input:{example['input'][i]} ### Response: {example['output'][i]}"
-#         output_texts.append(text)
-#     return output_texts
-
 def format_instruction(example):
     output_texts = []
-    for i in range(len(example["text"])):
-        # text = f"### Instruction: Generate Output according to the information and question given by Input. ### Input:{example['input'][i]} ### Response: {example['output'][i]}"
-        # output_texts.append(text)
-        output_texts.append(example["text"][i])
+    for i in range(len(example["input"])):
+        text = f"### Instruction: Generate Output according to the information and question given by Input. ### Input:{example['input'][i]} ### Response: {example['output'][i]}"
+        output_texts.append(text)
     return output_texts
+
+# def format_instruction(example):
+#     output_texts = []
+#     for i in range(len(example["text"])):
+#         # text = f"### Instruction: Generate Output according to the information and question given by Input. ### Input:{example['input'][i]} ### Response: {example['output'][i]}"
+#         # output_texts.append(text)
+#         output_texts.append(example["text"][i])
+#     return output_texts
 
 def main():
     parser = argparse.ArgumentParser()
