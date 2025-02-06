@@ -10,7 +10,7 @@ builders:
     config_folder: config
     overseer_agent:
       args:
-        sp_end_point: 127.0.0.1:8002:8003
+        sp_end_point: localhost:8002:8003
       overseer_exists: false
       path: nvflare.ha.dummy_overseer_agent.DummyOverseerAgent
   path: nvflare.lighter.impl.static_file.StaticFileBuilder
@@ -20,18 +20,18 @@ description: NVIDIA FLARE sample project yaml file
 name: example_project
 participants:
 - admin_port: 8003
-  default_host: 127.0.0.1
+  default_host: localhost
   fed_learn_port: 8002
-  name: 127.0.0.1
+  name: localhost
   org: nvidia
   type: server
-- name: site-1
-  org: nvidia
-  type: client
-- name: site-2
-  org: nvidia
-  type: client
 - name: admin@nvidia.com
   org: nvidia
   role: project_admin
   type: admin
+- name: client1
+  org: nvidia
+  type: client
+- name: client2
+  org: nvidia
+  type: client

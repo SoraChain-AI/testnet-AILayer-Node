@@ -19,16 +19,16 @@ def main():
 
 
     try:
-        internal_submit_job(args.admin_dir, args.username, args.job)
-        # sess = new_secure_session(
-        #     admin_username,
-        #     admin_user_dir
-        # )
-        # print(sess.api.check_session_status_on_server())
-        # job_id = sess.submit_job(job_dir)
-        # print(job_id + " was submitted")
+        # internal_submit_job(args.admin_dir, args.username, args.job)
+        sess = new_secure_session(
+            args.username,
+            args.admin_dir
+        )
+        print(sess.api.check_session_status_on_server())
+        job_id = sess.submit_job(job_dir)
+        print(job_id + " was submitted")
         # monitor_job() # waits until the job is done, see the section about it below for details
-        # sess.monitor_job(job_id)
+        sess.monitor_job(job_id)
         print("job done!")
     finally:
         pass
@@ -37,8 +37,8 @@ def main():
 def define_parser():
     parser = argparse.ArgumentParser() 
     parser.add_argument("--job", type=str, default=f"./workspace/SoraWorkspace/jobs/llm_hf_peft", help="Path to job config.")
-    parser.add_argument("--admin_dir", type=str, default="${PWD}/workspace/SoraWorkspace/example_project/prod_00/admin@nvidia.com", help="Path to job config.")
-    parser.add_argument("--username", type=str, default=f"admin@nvidia.com", help="Path to job config.")
+    parser.add_argument("--admin_dir", type=str, default="./workspace/SoraWorkspace/example_project/prod_00/admin@nvidia.com", help="Path to admin startup kit")
+    parser.add_argument("--username", type=str, default=f"admin@nvidia.com", help="admin username.")
     return parser.parse_args()
 
 if __name__ == "__main__":

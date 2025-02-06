@@ -15,7 +15,7 @@ from nvflare.tool.poc.poc_commands import start_poc,stop_poc,_prepare_poc,_prepa
 from nvflare.tool.poc.poc_commands import old_start_poc , DEFAULT_WORKSPACE, DEFAULT_PROJECT_NAME,get_prod_dir
 from nvflare.tool.job.job_cli import internal_submit_job
 from nvflare.lighter.provision import provision
-from src.PreprocessProject import createProjectFile,update_server_host
+from src.PreprocessProject import createProjectFile,update_server_host,modify_secure_train
 from utils.constants import default_Data_path, default_project_title
 from loguru import logger
 from utils.S3Uploader import S3Uploader
@@ -129,7 +129,14 @@ def main():
     
     update_server_host(args.project_file,args.training_server)
     provision(args.project_file, args.workspace_dir)
-    
+    PreparePOC(args.workspace_dir, args.client_ids, args.project_file)
+
+    modifySecureTrainConfig(workspace_dir,client_ids)
+    serverName = args.training_server
+    file = f"{workspace_dir}/example_project/prod_00/{serverName}/startup/sub_start.sh"
+    modify_secure_train(file)
+
+
     logger.info(f"Job to be submitted to server: {job_dir}/{job.name}")
     job.export_job(job_dir)
 
@@ -165,6 +172,17 @@ def PreparePOC( workspacePath , client_ids, projectfile_path ):
 
     logger.debug(f"prod dir: {get_production_dir(workspace)}")    
     
+def modifySecureTrainConfig(workspacePath,client_ids):    
+    id_list = client_ids
+    print("id_list",id_list)
+    workspace_path = workspacePath
+    for id in id_list:
+        file_path = os.path.join(workspace_path,"example_project/prod_00", id, "startup/sub_start.sh")        
+        if not os.path.exists(file_path):
+            # print(f"File not found: {file_path}")
+            continue      
+        modify_secure_train(file_path)
+
     
 
 # def AuthnticateNode(userAddress):
