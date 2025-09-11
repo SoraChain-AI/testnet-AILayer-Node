@@ -15,14 +15,15 @@ from loguru import logger
 import subprocess
 from huggingface_hub import HfApi
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from utils.constants import default_Data_path, default_training_server
+from utils.constants import default_Data_path, default_training_server,default_project_name
 from sft_job_FedAPI import get_prod_dir
+
  
 
 def main():
     args = define_parser()
     modelPath = args.model_name_or_path
-    getModel(modelPath) 
+    # getModel(modelPath) 
 
     if args.data_path is None:
         args.data_path = f"{default_Data_path}/training.jsonl"
@@ -77,7 +78,7 @@ def main():
 
     current_folder = os.path.dirname(os.path.realpath(__file__))
 
-    config_folder_path = get_prod_dir(args.workspace_dir)
+    config_folder_path = get_prod_dir(args.workspace_dir,default_project_name)
     project_file = os.path.join(args.workspace_dir, "project.yml")
 
     # Open the YAML file

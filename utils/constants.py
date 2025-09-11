@@ -61,4 +61,5 @@ default_Data_path = "./data/Output"
 default_training_server = "localhost"
 default_project_title = "SoraChainTestNode"
 default_global_model ="global_model.safetensors"
+default_project_name ="SoraTraining"
 
